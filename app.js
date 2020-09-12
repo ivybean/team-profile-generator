@@ -9,6 +9,135 @@ const OUTPUT_DIR = path.resolve(__dirname, "output");
 const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
+const Employee = require("./lib/Employee");
+const Choices = require("inquirer/lib/objects/choices");
+
+const teamArray = [];
+
+function promptBaseQs() {
+  inquirer
+  .prompt([
+    {
+      type: "input",
+      message: `What is your employess's name?`,
+      name: "name"
+    },
+    {
+      type: "input",
+      message: `What is your employees's id number?`,
+      name: "id"
+    },
+    {
+      type: "input",
+      message: `What is your employee's email address?`,
+      name: "email"
+    },
+    {
+      type: "list",
+      message: `What is your employee's role?`,
+      name: "role",
+      choices: ["Intern", "Engineer", "Manager"]
+    }
+  ])
+  .then(function (answers) {
+    if (answers.role === "Intern") {
+      promptInternQs();
+    } else if (answers.role === "Engineer") {
+      promptEngineerQs();
+    } else if (answers.role === "Manager") {
+      promptManagerQs();
+    };
+  })
+}
+
+function promptInternQs(baseAnswers) {
+  inquirer
+  .prompt([
+    {
+      type: "input",
+      message: "What is your intern's current school?",
+      name:"school"
+    },
+    {
+      type: "confirm",
+      message: "Would you like to add another employee?",
+      name:"addNew"
+    }
+  ])
+  .then(function (answers) {
+    const intern = new Intern(baseAnswers.name, baseAnswers.id, baseAnswers.email, baseAnswers.role, answers.school)
+    teamArray.push(intern);
+
+    if (answers.addNew === true) {
+      promptBaseQs()
+    } else {
+      generateTeam();
+      console.log("Team has been generated!")
+    };
+  })
+};
+
+function promptEngineerQs(baseAnswers) {
+  inquirer
+  .prompt([
+    {
+      type: "input",
+      message: "What is your engineer's Github username?",
+      name:"github"
+    },
+    {
+      type: "confirm",
+      message: "Would you like to add another employee?",
+      name:"addNew"
+    }
+  ])
+  .then(function (answers) {
+    const intern = new Intern(baseAnswers.name, baseAnswers.id, baseAnswers.email, baseAnswers.role, answers.github)
+    teamArray.push(intern);
+
+    if (answers.addNew === true) {
+      promptBaseQs()
+    } else {
+      generateTeam();
+      console.log("Team has been generated!")
+    };
+  })
+}
+
+function promptManagerQs(baseAnswers) {
+  inquirer
+  .prompt([
+    {
+      type: "input",
+      message: "What is your manager's office number?",
+      name:"officeNumber"
+    },
+    {
+      type: "confirm",
+      message: "Would you like to add another employee?",
+      name:"addNew"
+    }
+  ])
+  .then(function (answers) {
+    const intern = new Intern(baseAnswers.name, baseAnswers.id, baseAnswers.email, baseAnswers.role, answers.officeNumber)
+    teamArray.push(intern);
+
+    if (answers.addNew === true) {
+      promptBaseQs()
+    } else {
+      generateTeam();
+      console.log("Team has been generated!")
+    };
+  })
+}
+
+function generateTeam() {
+
+};
+
+promptBaseQs();
+
+
 
 
 // Write code to use inquirer to gather information about the development team members,
@@ -32,4 +161,4 @@ const render = require("./lib/htmlRenderer");
 // and Intern classes should all extend from a class named Employee; see the directions
 // for further information. Be sure to test out each class and verify it generates an
 // object with the correct structure and methods. This structure will be crucial in order
-// for the provided `render` function to work! ```
+// for the provided `render` function to work! 
