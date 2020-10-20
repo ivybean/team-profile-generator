@@ -41,11 +41,11 @@ function promptBaseQs() {
   ])
   .then(function (answers) {
     if (answers.role === "Intern") {
-      promptInternQs();
+      promptInternQs(answers);
     } else if (answers.role === "Engineer") {
-      promptEngineerQs();
+      promptEngineerQs(answers);
     } else if (answers.role === "Manager") {
-      promptManagerQs();
+      promptManagerQs(answers);
     };
   })
 }
@@ -132,7 +132,7 @@ function promptManagerQs(baseAnswers) {
 }
 
 function generateTeam() {
-
+  console.log(teamArray);
 };
 
 promptBaseQs();
